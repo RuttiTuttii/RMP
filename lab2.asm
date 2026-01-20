@@ -1,11 +1,21 @@
 %include "io.inc"
 
 section .data
-    msg_div  db "Введите a и b:", 0
-    msg_func db "Введите a, x, b, c:", 0
-    msg_even db "Введите число:", 0
-    msg_file db "Введите размер файла (байты):", 0
-    msg_rgb  db "Введите R G B:", 0
+    msg_div     db "Введите a и b:", 0
+    msg_q       db "Частное: ", 0
+    msg_r       db "Остаток: ", 0
+
+    msg_func    db "Введите a, x, b, c:", 0
+    msg_y       db "y = ", 0
+
+    msg_even    db "Введите число:", 0
+    msg_res     db "Результат: ", 0
+
+    msg_file    db "Введите размер файла (байты):", 0
+    msg_kb      db "Килобайты: ", 0
+
+    msg_rgb     db "Введите R G B:", 0
+    msg_color   db "Цвет (HEX): ", 0
 
 section .bss
     a  resd 1
@@ -31,10 +41,10 @@ main:
     cdq
     idiv dword [b]
 
-    PRINT_STRING "Частное: "
+    PRINT_STRING msg_q
     PRINT_DEC 4, eax
     NEWLINE
-    PRINT_STRING "Остаток: "
+    PRINT_STRING msg_r
     PRINT_DEC 4, edx
     NEWLINE
     NEWLINE
@@ -48,15 +58,15 @@ main:
     GET_DEC 4, [c]
 
     mov eax, [x]
-    imul eax, eax        ; x^2
-    imul eax, [a]        ; a*x^2
+    imul eax, eax
+    imul eax, [a]
 
     mov ebx, [x]
-    imul ebx, [b]        ; b*x
+    imul ebx, [b]
     add eax, ebx
     add eax, [c]
 
-    PRINT_STRING "y = "
+    PRINT_STRING msg_y
     PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
@@ -67,9 +77,9 @@ main:
     GET_DEC 4, eax
 
     and eax, 1
-    xor eax, 1           ; 1 — четное, 0 — нечетное
+    xor eax, 1
 
-    PRINT_STRING "Результат: "
+    PRINT_STRING msg_res
     PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
@@ -79,9 +89,9 @@ main:
     NEWLINE
     GET_DEC 4, eax
 
-    shr eax, 10          ; /1024
+    shr eax, 10
 
-    PRINT_STRING "Килобайты: "
+    PRINT_STRING msg_kb
     PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
@@ -100,7 +110,7 @@ main:
     add eax, ebx
     add eax, [bl]
 
-    PRINT_STRING "Цвет (HEX): "
+    PRINT_STRING msg_color
     PRINT_HEX 4, eax
     NEWLINE
 
