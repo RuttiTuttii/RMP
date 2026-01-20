@@ -1,20 +1,20 @@
-%include "io64.inc"
+%include "io.inc"
 
 section .data
-    msg_div     db "Введите a и b:", 0
-    msg_func    db "Введите a, x, b, c:", 0
-    msg_even    db "Введите число:", 0
-    msg_file    db "Введите размер файла (байты):", 0
-    msg_rgb     db "Введите R G B:", 0
+    msg_div  db "Введите a и b:", 0
+    msg_func db "Введите a, x, b, c:", 0
+    msg_even db "Введите число:", 0
+    msg_file db "Введите размер файла (байты):", 0
+    msg_rgb  db "Введите R G B:", 0
 
 section .bss
-    a resq 1
-    b resq 1
-    x resq 1
-    c resq 1
-    r resq 1
-    g resq 1
-    bl resq 1
+    a  resd 1
+    b  resd 1
+    x  resd 1
+    c  resd 1
+    r  resd 1
+    g  resd 1
+    bl resd 1
 
 section .text
 global main
@@ -24,85 +24,85 @@ main:
 ; ---------- 5.1 Частное и остаток ----------
     PRINT_STRING msg_div
     NEWLINE
-    GET_DEC 8, [a]
-    GET_DEC 8, [b]
+    GET_DEC 4, [a]
+    GET_DEC 4, [b]
 
-    mov rax, [a]
-    cqo
-    idiv qword [b]
+    mov eax, [a]
+    cdq
+    idiv dword [b]
 
     PRINT_STRING "Частное: "
-    PRINT_DEC 8, rax
+    PRINT_DEC 4, eax
     NEWLINE
     PRINT_STRING "Остаток: "
-    PRINT_DEC 8, rdx
+    PRINT_DEC 4, edx
     NEWLINE
     NEWLINE
 
-; ---------- 5.2 y = ax^2 + bx + c ----------
+; ---------- 5.2 y = a*x^2 + b*x + c ----------
     PRINT_STRING msg_func
     NEWLINE
-    GET_DEC 8, [a]
-    GET_DEC 8, [x]
-    GET_DEC 8, [b]
-    GET_DEC 8, [c]
+    GET_DEC 4, [a]
+    GET_DEC 4, [x]
+    GET_DEC 4, [b]
+    GET_DEC 4, [c]
 
-    mov rax, [x]
-    imul rax, rax        ; x^2
-    imul rax, [a]        ; a*x^2
+    mov eax, [x]
+    imul eax, eax        ; x^2
+    imul eax, [a]        ; a*x^2
 
-    mov rbx, [x]
-    imul rbx, [b]        ; b*x
-    add rax, rbx
-    add rax, [c]
+    mov ebx, [x]
+    imul ebx, [b]        ; b*x
+    add eax, ebx
+    add eax, [c]
 
     PRINT_STRING "y = "
-    PRINT_DEC 8, rax
+    PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
 
 ; ---------- 5.3 Четное / нечетное ----------
     PRINT_STRING msg_even
     NEWLINE
-    GET_DEC 8, rax
+    GET_DEC 4, eax
 
-    and rax, 1
-    xor rax, 1           ; 1 если четное, 0 если нет
+    and eax, 1
+    xor eax, 1           ; 1 — четное, 0 — нечетное
 
     PRINT_STRING "Результат: "
-    PRINT_DEC 1, rax
+    PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
 
-; ---------- 5.4 Байты в килобайты ----------
+; ---------- 5.4 Байты → килобайты ----------
     PRINT_STRING msg_file
     NEWLINE
-    GET_DEC 8, rax
+    GET_DEC 4, eax
 
-    shr rax, 10          ; деление на 1024
+    shr eax, 10          ; /1024
 
     PRINT_STRING "Килобайты: "
-    PRINT_DEC 8, rax
+    PRINT_DEC 4, eax
     NEWLINE
     NEWLINE
 
-; ---------- 5.5 RGB -> число ----------
+; ---------- 5.5 RGB → число ----------
     PRINT_STRING msg_rgb
     NEWLINE
-    GET_DEC 8, [r]
-    GET_DEC 8, [g]
-    GET_DEC 8, [bl]
+    GET_DEC 4, [r]
+    GET_DEC 4, [g]
+    GET_DEC 4, [bl]
 
-    mov rax, [r]
-    shl rax, 16
-    mov rbx, [g]
-    shl rbx, 8
-    add rax, rbx
-    add rax, [bl]
+    mov eax, [r]
+    shl eax, 16
+    mov ebx, [g]
+    shl ebx, 8
+    add eax, ebx
+    add eax, [bl]
 
-    PRINT_STRING "Цвет: "
-    PRINT_HEX 8, rax
+    PRINT_STRING "Цвет (HEX): "
+    PRINT_HEX 4, eax
     NEWLINE
 
-    xor rax, rax
+    xor eax, eax
     ret
