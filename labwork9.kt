@@ -3,26 +3,26 @@ import java.util.Scanner
 fun main() {
     val scanner = Scanner(System.`in`)
 
-    listOfStrings(scanner)
+    namesList(scanner)
     println("-----")
 
-    listOfInts(scanner)
+    intListProcessing(scanner)
     println("-----")
 
-    mapWork(scanner)
+    bookAuthorMap(scanner)
     println("-----")
 
-    setWork()
+    studentsSets()
 }
 
-/* 5.1 создание, заполнение и вывод списка строк */
-fun listOfStrings(scanner: Scanner) {
-    val list = mutableListOf<String>()
+/* 5.1 создание, заполнение и вывод списка (имена) */
+fun namesList(scanner: Scanner) {
+    val names = mutableListOf<String>()
 
     // добавление 3 элементов программно
-    list.add("alpha")
-    list.add("beta")
-    list.add("gamma")
+    names.add("Анна")
+    names.add("Иван")
+    names.add("Мария")
 
     print("введите количество элементов n: ")
     val n = scanner.nextInt()
@@ -30,20 +30,20 @@ fun listOfStrings(scanner: Scanner) {
 
     // ввод n элементов с клавиатуры
     for (i in 1..n) {
-        print("введите строку $i: ")
-        list.add(scanner.nextLine())
+        print("введите имя $i: ")
+        names.add(scanner.nextLine())
     }
 
-    // вывод элементов списка
-    for (i in list.indices) {
-        println("${i + 1} - ${list[i]}")
+    // вывод списка
+    for (i in names.indices) {
+        println("${i + 1} - ${names[i]}")
     }
 
-    println("количество элементов списка: ${list.size}")
+    println("количество элементов списка: ${names.size}")
 }
 
-/* 5.2 обработка списков целых чисел */
-fun listOfInts(scanner: Scanner) {
+/* 5.2 обработка списка целых чисел */
+fun intListProcessing(scanner: Scanner) {
     val numbers = mutableListOf<Int>()
 
     print("введите количество элементов n: ")
@@ -54,7 +54,7 @@ fun listOfInts(scanner: Scanner) {
         numbers.add(scanner.nextInt())
     }
 
-    // индекс элемента со значением 100
+    // поиск индекса элемента со значением 100
     val index100 = numbers.indexOf(100)
     if (index100 != -1) {
         println("индекс элемента со значением 100: $index100")
@@ -63,27 +63,27 @@ fun listOfInts(scanner: Scanner) {
     }
 
     // сумма элементов
-    println("сумма элементов: ${numbers.sum()}")
+    println("сумма элементов коллекции: ${numbers.sum()}")
 
     // среднее значение
-    println("среднее значение: ${numbers.average()}")
+    println("среднее значение элементов коллекции: ${numbers.average()}")
 
-    // все ли числа больше нуля
+    // проверка, все ли числа больше нуля
     println("все ли числа больше нуля: ${numbers.all { it > 0 }}")
 
-    // все нечетные значения
+    // вывод нечетных элементов
     val oddNumbers = numbers.filter { it % 2 != 0 }
-    println("нечетные значения: $oddNumbers")
+    println("нечетные значения элементов: $oddNumbers")
 }
 
-/* 5.3 и 5.4 работа со словарем */
-fun mapWork(scanner: Scanner) {
-    val map = mutableMapOf<Int, String>()
+/* 5.3 и 5.4 словарь (книга – автор) */
+fun bookAuthorMap(scanner: Scanner) {
+    val books = mutableMapOf<String, String>()
 
     // добавление 3 элементов программно
-    map[1] = "один"
-    map[2] = "два"
-    map[3] = "три"
+    books["Мастер и Маргарита"] = "Булгаков"
+    books["Война и мир"] = "Толстой"
+    books["Преступление и наказание"] = "Достоевский"
 
     print("введите количество элементов n: ")
     val n = scanner.nextInt()
@@ -91,51 +91,48 @@ fun mapWork(scanner: Scanner) {
 
     // ввод n элементов с клавиатуры
     for (i in 1..n) {
-        print("введите ключ (int): ")
-        val key = scanner.nextInt()
-        scanner.nextLine()
-        print("введите значение (string): ")
-        val value = scanner.nextLine()
-        map[key] = value
+        print("введите название книги: ")
+        val book = scanner.nextLine()
+        print("введите автора: ")
+        val author = scanner.nextLine()
+        books[book] = author
     }
 
     // вывод словаря
-    for ((key, value) in map) {
-        println("$key - $value")
+    for ((book, author) in books) {
+        println("$book - $author")
     }
-    println("количество элементов словаря: ${map.size}")
+    println("количество элементов словаря: ${books.size}")
 
     // поиск по ключу
-    print("введите ключ для поиска: ")
-    val searchKey = scanner.nextInt()
-    scanner.nextLine()
+    print("введите название книги для поиска: ")
+    val searchBook = scanner.nextLine()
 
-    if (map.containsKey(searchKey)) {
-        println("ключ найден, значение: ${map[searchKey]}")
+    if (books.containsKey(searchBook)) {
+        println("книга найдена, автор: ${books[searchBook]}")
     } else {
-        println("указанный ключ отсутствует в словаре")
+        println("указанная книга отсутствует в словаре")
     }
 
-    // подсчет совпадений значений
-    print("введите значение для подсчета совпадений: ")
-    val searchValue = scanner.nextLine()
-    val count = map.values.count { it == searchValue }
+    // подсчет совпадений по автору
+    print("введите автора для подсчета совпадений: ")
+    val searchAuthor = scanner.nextLine()
+    val count = books.values.count { it == searchAuthor }
     println("количество совпадений значения: $count")
 
     // удаление элемента по ключу
-    print("введите ключ для удаления: ")
-    val removeKey = scanner.nextInt()
-    map.remove(removeKey)
+    print("введите название книги для удаления: ")
+    val removeBook = scanner.nextLine()
+    books.remove(removeBook)
 
     println("словарь после удаления:")
-    for ((key, value) in map) {
-        println("$key - $value")
+    for ((book, author) in books) {
+        println("$book - $author")
     }
 }
 
 /* 5.5 обработка множеств */
-fun setWork() {
-    // множества студентов, не сдавших зачет
+fun studentsSets() {
     val teacher1 = setOf(
         "иванов и.и.",
         "петров п.п.",
